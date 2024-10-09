@@ -1,7 +1,7 @@
 A collection of custom Kismet Blocks for sequences in Mass Effect Legendary Edition.
 
 ## Adding blocks to Sequence Editor
-With ![Legendary Explorer](https://github.com/ME3Tweaks/LegendaryExplorer), open the *Sequence Editor*. On the top left of the editor, open the *Experiments* tab, select *Load Custom Sequence Objects from Package*, and find the downloaded LEXGameContent.pcc's. They can then be found in the *Sequence Object Toolbox*.
+With ![Legendary Explorer](https://github.com/ME3Tweaks/LegendaryExplorer), open the *Sequence Editor*. On the top left of the editor, open the *Experiments* tab, select *Load Custom Sequence Objects from Package*, and find the downloaded KismetBlocks.pcc's. They can then be found in the *Sequence Object Toolbox*.
 
 This needs to be repeated every new Legendary Explorer session.
 
