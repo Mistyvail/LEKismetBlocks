@@ -89,12 +89,12 @@ public function Activated()
         }
     }
 }
-public function SetMaterialParameters(MaterialInterface Material)
+public function SetMaterialParameters(MaterialInterface InMaterial)
 {
     local MaterialInstanceConstant MIC;
     local int idx;
     
-    MIC = MaterialInstanceConstant(Material);
+    MIC = MaterialInstanceConstant(InMaterial);
     if (MIC != None)
     {
         for (idx = 0; idx < VectorParameterValues.Length; ++idx)
