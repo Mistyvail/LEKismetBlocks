@@ -14,8 +14,10 @@ This needs to be repeated every new Legendary Explorer session.
 #### SFXSeqAct_SetPawnAppearance
 - Changes a BioPawns Meshes, Materials, and Material Parameters.
     - Material Parameters will be applied to all skeletal components; it's not limited to new meshes.
+#### SFXSeqAct_SetPawnMesh
+- Targets a BioPawns Component and changes its Mesh and associated materials.
 #### SFXSeqAct_SetPawnMaterials
-- Targets a BioPawns Components and changes its Materials.
+- Targets a BioPawns Component and changes its Materials.
 #### SFXSeqAct_SetPawnMaterialParameters
 - Changes a BioPawns Vector, Scalar, and Texture Parameters.
     - Can either target a BioPawns Component or if the enum is "None", applies to all.
