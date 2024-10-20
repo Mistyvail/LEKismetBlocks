@@ -38,9 +38,9 @@ public function Activated()
                     }
                     break;
                 case GBioPawnComponent.BioPawnComponent_Head:
-                    for (idx = 0; idx < Pawn.m_oHeadMesh.Materials.Length; idx++)
+                    for (idx = 0; idx < Pawn.HeadMesh.Materials.Length; idx++)
                     {
-                        SetMaterialParameters(Pawn.m_oHeadMesh.Materials[idx]);
+                        SetMaterialParameters(Pawn.HeadMesh.Materials[idx]);
                     }
                     break;
                 case GBioPawnComponent.BioPawnComponent_Hair:

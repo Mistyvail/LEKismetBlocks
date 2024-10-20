@@ -55,10 +55,10 @@ public function Activated()
                 ResetSkeletalComponent(Pawn, Pawn.Mesh, m_oMesh, m_aoMeshMaterials, 0);
                 UpdateBoneMap(Pawn);
             }
-            if (m_Head.Mesh != None)
+             if (m_Head.Mesh != None)
             {
-                ResetSkeletalComponent(Pawn, Pawn.m_oHeadMesh, m_Head.Mesh, m_Head.Materials, 1);
-                Pawn.m_oBehavior.m_oAppearanceType.m_oMorphFace = m_Head.MorphHead;
+                ResetSkeletalComponent(Pawn, Pawn.HeadMesh, m_Head.Mesh, m_Head.Materials, 1);
+                Pawn.MorphHead = m_Head.MorphHead;
             }
             if (m_oHairMesh != None)
             {
@@ -83,7 +83,7 @@ public function Activated()
                     ResetSkeletalComponent(Pawn, Pawn.m_aoAccessories[idx], m_aoAccessories[idx].Mesh, m_aoAccessories[idx].Materials, 6);
                 }
             }
-            HideSkeletalComponent(Pawn, Pawn.m_oHeadMesh, m_bHideHead);
+            HideSkeletalComponent(Pawn, Pawn.HeadMesh, m_bHideHead);
             HideSkeletalComponent(Pawn, Pawn.m_oHairMesh, m_bHideHair);
             HideSkeletalComponent(Pawn, Pawn.m_oHeadGearMesh, m_bHideHeadgear);
             HideSkeletalComponent(Pawn, Pawn.m_oVisorMesh, m_bHideVisor);
@@ -138,14 +138,14 @@ public function SkeletalMeshComponent CreateSkeletalComponent(BioPawn InPawn, in
     NewCmpt.bUseOnePassLightingOnTranslucency = TRUE;
     NewCmpt.SetParentAnimComponent(InPawn.Mesh);
     NewCmpt.SetShadowParent(InPawn.Mesh);
-    NewCmpt.SetLightEnvironment(InPawn.m_pLightEnvComponent);
+    NewCmpt.SetLightEnvironment(InPawn.LightEnvironment);
     InPawn.AttachComponent(NewCmpt);
     switch (Identifier)
     {
         case 1:
             NewCmpt.bOverrideParentSkeleton = TRUE;
             NewCmpt.nmOverrideStartBoneName = 'headBase';
-            InPawn.m_oHeadMesh = NewCmpt;
+            InPawn.HeadMesh = NewCmpt;
             break;
         case 2:
             InPawn.m_oHairMesh = NewCmpt;
@@ -234,12 +234,12 @@ public function ApplyOverrides(BioPawn InPawn)
 {
     local BioMorphFace Morph;
     
-    Morph = InPawn.m_oBehavior.m_oAppearanceType.m_oMorphFace;
-    if (Morph == None)
+    Morph = InPawn.MorphHead;
+    if (Morph.m_oMaterialOverrides == None)
     {
-        Morph = BioPawnChallengeScaledType(InPawn.m_oBehavior.m_oActorType).m_oMorphFace;
+        Morph = BioPawnType(InPawn.ActorType).m_oMorphFace;
     }
-    if (Morph == None)
+    if (Morph.m_oMaterialOverrides == None)
     {
         return;
     }

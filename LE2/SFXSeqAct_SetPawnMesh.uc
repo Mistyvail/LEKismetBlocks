@@ -85,12 +85,12 @@ public function ApplyBasicOverrides(BioPawn InPawn, MaterialInstanceConstant InM
     local BioMorphFace Morph;
     local ColorParameter Param;
     
-    Morph = InPawn.m_oBehavior.m_oAppearanceType.m_oMorphFace;
-    if (Morph == None)
+    Morph = InPawn.MorphHead;
+    if (Morph.m_oMaterialOverrides == None)
     {
-        Morph = BioPawnChallengeScaledType(InPawn.m_oBehavior.m_oActorType).m_oMorphFace;
+        Morph = BioPawnType(InPawn.ActorType).m_oMorphFace;
     }
-    if (Morph == None)
+    if (Morph.m_oMaterialOverrides == None)
     {
         return;
     }
