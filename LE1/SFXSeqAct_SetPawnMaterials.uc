@@ -31,7 +31,7 @@ public function Activated()
                     SetComponentMaterials(Pawn, Pawn.Mesh, m_aoMaterials);
                     break;
                 case FBioPawnComponent.BioPawnComponent_Head:
-                    SetComponentMaterials(Pawn, Pawn.HeadMesh, m_aoMaterials);
+                    SetComponentMaterials(Pawn, Pawn.m_oHeadMesh, m_aoMaterials);
                     break;
                 case FBioPawnComponent.BioPawnComponent_Hair:
                     SetComponentMaterials(Pawn, Pawn.m_oHairMesh, m_aoMaterials);

@@ -15,6 +15,7 @@ var(SFXSeqAct_SetPawnMesh) EBioPawnComponent m_eBioPawnComponent;
 var(SFXSeqAct_SetPawnMesh) SkeletalMesh m_oMesh;
 var(SFXSeqAct_SetPawnMesh) array<MaterialInterface> m_aoMaterials;
 var(SFXSeqAct_SetPawnMesh) int m_nAccessory;
+var(SFXSeqAct_SetPawnMesh) bool bPreserveAnimation;
 
 public function Activated()
 {
@@ -64,7 +65,7 @@ public function SetComponentMesh(BioPawn InPawn, SkeletalMeshComponent InCompone
     {
         InComponent.SetMaterial(idx, None);
     }
-    InComponent.SetSkeletalMesh(InMesh, TRUE);
+    InComponent.SetSkeletalMesh(InMesh, bPreserveAnimation);
     if (InComponent.SkeletalMesh != None)
     {
         for (idx = 0; idx < InComponent.SkeletalMesh.Materials.Length; ++idx)

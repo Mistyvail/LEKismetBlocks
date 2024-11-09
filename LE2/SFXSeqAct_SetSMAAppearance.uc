@@ -21,6 +21,7 @@ var(SFXSeqAct_SetSMAAppearance) array<MaterialInterface> m_aoHairMaterials;
 var(SFXSeqAct_SetSMAAppearance) MaterialParameters m_MaterialParameters;
 var(SFXSeqAct_SetSMAAppearance) bool m_bHideHead;
 var(SFXSeqAct_SetSMAAppearance) bool m_bHideHair;
+var(SFXSeqAct_SetSMAAppearance) bool bPreserveAnimation;
 
 public function Activated()
 {
@@ -112,7 +113,7 @@ public function ResetSkeletalComponent(SkeletalMeshActor InSMA, SkeletalMeshComp
     {
         InComponent.SetMaterial(idx, None);
     }
-    InComponent.SetSkeletalMesh(InMesh, TRUE);
+    InComponent.SetSkeletalMesh(InMesh, bPreserveAnimation);
     for (idx = 0; idx < InComponent.SkeletalMesh.Materials.Length; ++idx)
     {
         MIC = new (InComponent) Class'MaterialInstanceConstant';

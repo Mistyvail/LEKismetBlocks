@@ -10,6 +10,7 @@ enum ESMAComponent
 var(SFXSeqAct_SetSMAMesh) ESMAComponent m_eSMAComponent;
 var(SFXSeqAct_SetSMAMesh) SkeletalMesh m_oMesh;
 var(SFXSeqAct_SetSMAMesh) array<MaterialInterface> m_aoMaterials;
+var(SFXSeqAct_SetSMAMesh) bool bPreserveAnimation;
 
 public function Activated()
 {
@@ -76,7 +77,7 @@ public function SetComponentMesh(SkeletalMeshActor InSMA, SkeletalMeshComponent 
     {
         InComponent.SetMaterial(idx, None);
     }
-    InComponent.SetSkeletalMesh(InMesh, TRUE);
+    InComponent.SetSkeletalMesh(InMesh, bPreserveAnimation);
     if (InComponent.SkeletalMesh != None)
     {
         for (idx = 0; idx < InComponent.SkeletalMesh.Materials.Length; ++idx)
