@@ -1,13 +1,21 @@
 Class SFXSeqCond_GetPlayerClass extends SequenceCondition;
 
-var(SFXSeqAct_GetPlayerClass) Object Player;
-
 public function Activated()
 {
+    local WorldInfo WI;
+    local PlayerController PC;
     local BioPawn PlayerPawn;
     
-    PlayerPawn = BioPawn(GetPawn(Actor(Player)));
-    ActivateOutputLink(GetClass(PlayerPawn));
+    WI = Class'WorldInfo'.static.GetWorldInfo();
+    if (WI != None)
+    {
+        PC = WI.GetALocalPlayerController();
+        if (PC != None)
+        {
+            PlayerPawn = BioPawn(PC.Pawn);
+            ActivateOutputLink(GetClass(PlayerPawn));
+        }
+    }
 }
 public function int GetClass(BioPawn PlayerPawn)
 {
@@ -94,18 +102,4 @@ defaultproperties
                     bDisabled = FALSE
                    }
                   )
-    VariableLinks = ({
-                      LinkedVariables = (), 
-                      LinkDesc = "Player", 
-                      ExpectedType = Class'SeqVar_Object', 
-                      LinkVar = 'None', 
-                      PropertyName = 'Player', 
-                      CachedProperty = None, 
-                      MinVars = 1, 
-                      MaxVars = 255, 
-                      bWriteable = FALSE, 
-                      bModifiesLinkedObject = FALSE, 
-                      bAllowAnyType = FALSE
-                     }
-                    )
 }
