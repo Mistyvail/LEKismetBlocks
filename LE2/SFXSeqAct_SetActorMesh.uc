@@ -1,16 +1,16 @@
-Class SFXSeqAct_SetSMAMesh extends SequenceAction;
+Class SFXSeqAct_SetActorMesh extends SequenceAction;
 
-enum ESMAComponent
+enum EActorComponent
 {
-    SMAComponent_Mesh,
-    SMAComponent_Head,
-    SMAComponent_Hair,
+    ActorComponent_Mesh,
+    ActorComponent_Head,
+    ActorComponent_Hair,
 };
 
-var(SFXSeqAct_SetSMAMesh) ESMAComponent m_eSMAComponent;
-var(SFXSeqAct_SetSMAMesh) SkeletalMesh m_oMesh;
-var(SFXSeqAct_SetSMAMesh) array<MaterialInterface> m_aoMaterials;
-var(SFXSeqAct_SetSMAMesh) bool bPreserveAnimation;
+var(SFXSeqAct_SetActorMesh) EActorComponent m_eActorComponent;
+var(SFXSeqAct_SetActorMesh) SkeletalMesh m_oMesh;
+var(SFXSeqAct_SetActorMesh) array<MaterialInterface> m_aoMaterials;
+var(SFXSeqAct_SetActorMesh) bool bPreserveAnimation;
 
 public function Activated()
 {
@@ -22,40 +22,42 @@ public function Activated()
         SMA = SFXSkeletalMeshActor(ChkObject);
         if (SMA != None)
         {
-            switch (m_eSMAComponent)
+            switch (m_eActorComponent)
             {
-                case ESMAComponent.SMAComponent_Mesh:
+                case EActorComponent.ActorComponent_Mesh:
                     SetComponentMesh(SMA, SMA.SkeletalMeshComponent, m_oMesh, m_aoMaterials);
                     UpdateBoneMap(SFXSkeletalMeshActor(SMA));
                     break;
-                case ESMAComponent.SMAComponent_Head:
+                case EActorComponent.ActorComponent_Head:
                     SetComponentMesh(SMA, SFXSkeletalMeshActorMAT(SMA).HeadMesh, m_oMesh, m_aoMaterials);
                     break;
-                case ESMAComponent.SMAComponent_Hair:
+                case EActorComponent.ActorComponent_Hair:
                     SetComponentMesh(SMA, SFXSkeletalMeshActor(SMA).HairMesh, m_oMesh, m_aoMaterials);
                     break;
                 default:
             }
+            continue;
         }
         else
         {
             SMA = SFXSkeletalMeshActorMAT(ChkObject);
             if (SMA != None)
             {
-                switch (m_eSMAComponent)
+                switch (m_eActorComponent)
                 {
-                    case ESMAComponent.SMAComponent_Mesh:
+                    case EActorComponent.ActorComponent_Mesh:
                         SetComponentMesh(SMA, SMA.SkeletalMeshComponent, m_oMesh, m_aoMaterials);
                         UpdateBoneMap(SFXSkeletalMeshActorMAT(SMA));
                         break;
-                    case ESMAComponent.SMAComponent_Head:
+                    case EActorComponent.ActorComponent_Head:
                         SetComponentMesh(SMA, SFXSkeletalMeshActorMAT(SMA).HeadMesh, m_oMesh, m_aoMaterials);
                         break;
-                    case ESMAComponent.SMAComponent_Hair:
+                    case EActorComponent.ActorComponent_Hair:
                         SetComponentMesh(SMA, SFXSkeletalMeshActorMAT(SMA).HairMesh, m_oMesh, m_aoMaterials);
                         break;
                     default:
                 }
+                continue;
             }
             else
             {
@@ -68,7 +70,7 @@ public function Activated()
         }
     }
 }
-public function SetComponentMesh(SkeletalMeshActor InSMA, SkeletalMeshComponent InComponent, SkeletalMesh InMesh, array<MaterialInterface> InMaterials)
+public function SetComponentMesh(Actor InActor, SkeletalMeshComponent InComponent, SkeletalMesh InMesh, array<MaterialInterface> InMaterials)
 {
     local MaterialInstanceConstant MIC;
     local int idx;
@@ -84,30 +86,33 @@ public function SetComponentMesh(SkeletalMeshActor InSMA, SkeletalMeshComponent 
         {
             MIC = new (InComponent) Class'MaterialInstanceConstant';
             MIC.SetParent(InComponent.SkeletalMesh.Materials[idx]);
-            if (InMaterials[idx] != None)
+            if (InMaterials.Length > 0 && InMaterials[idx] != None)
             {
                 MIC.SetParent(InMaterials[idx]);
             }
-            ApplyBasicOverrides(InSMA, MIC);
+            ApplyBasicOverrides(InActor, MIC);
             InComponent.SetMaterial(idx, MIC);
         }
     }
 }
-public function ApplyBasicOverrides(SkeletalMeshActor InSMA, MaterialInstanceConstant InMaterial)
+public function ApplyBasicOverrides(Actor InActor, MaterialInstanceConstant InMaterial)
 {
     local BioMorphFace Morph;
     local ColorParameter Param;
     
-    Morph = SFXSkeletalMeshActor(InSMA).MorphHead;
-    if (Morph.m_oMaterialOverrides == None)
+    if (SFXSkeletalMeshActor(InActor) != None)
     {
-        Morph = SFXSkeletalMeshActorMAT(InSMA).MorphHead;
+        Morph = SFXSkeletalMeshActor(InActor).MorphHead;
     }
-    if (Morph.m_oMaterialOverrides == None)
+    if (SFXSkeletalMeshActorMAT(InActor) != None)
     {
-        Morph = BioPawnType(InSMA.ActorType).m_oMorphFace;
+        Morph = SFXSkeletalMeshActorMAT(InActor).MorphHead;
     }
-    if (Morph.m_oMaterialOverrides == None)
+    if (Morph == None || Morph.m_oMaterialOverrides == None)
+    {
+        Morph = BioPawnType(InActor.ActorType).m_oMorphFace;
+    }
+    if (Morph == None || Morph.m_oMaterialOverrides == None)
     {
         return;
     }
@@ -119,14 +124,14 @@ public function ApplyBasicOverrides(SkeletalMeshActor InSMA, MaterialInstanceCon
         }
     }
 }
-public function UpdateBoneMap(SkeletalMeshActor InSMA)
+public function UpdateBoneMap(Actor InActor)
 {
     local SkeletalMeshComponent MeshCmpt;
     local int idx;
     
-    foreach InSMA.ComponentList(Class'SkeletalMeshComponent', MeshCmpt)
+    foreach InActor.ComponentList(Class'SkeletalMeshComponent', MeshCmpt)
     {
-        if (MeshCmpt != None && MeshCmpt != InSMA.SkeletalMeshComponent)
+        if (MeshCmpt != None && MeshCmpt != SkeletalMeshActor(InActor).SkeletalMeshComponent)
         {
             MeshCmpt.UpdateParentBoneMap();
         }
@@ -139,7 +144,7 @@ defaultproperties
     bCallHandler = FALSE
     VariableLinks = ({
                       LinkedVariables = (), 
-                      LinkDesc = "MeshActor", 
+                      LinkDesc = "Actor", 
                       ExpectedType = Class'SeqVar_Object', 
                       LinkVar = 'None', 
                       PropertyName = 'Targets', 
@@ -158,7 +163,7 @@ defaultproperties
                       PropertyName = 'm_oMesh', 
                       CachedProperty = None, 
                       MinVars = 1, 
-                      MaxVars = 255, 
+                      MaxVars = 1, 
                       bWriteable = FALSE, 
                       bModifiesLinkedObject = FALSE, 
                       bAllowAnyType = FALSE

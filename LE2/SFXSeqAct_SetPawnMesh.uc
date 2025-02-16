@@ -91,7 +91,7 @@ public function ApplyBasicOverrides(BioPawn InPawn, MaterialInstanceConstant InM
     {
         Morph = BioPawnType(InPawn.ActorType).m_oMorphFace;
     }
-    if (Morph.m_oMaterialOverrides == None)
+    if (Morph == None || Morph.m_oMaterialOverrides == None)
     {
         return;
     }
@@ -141,7 +141,7 @@ defaultproperties
                       PropertyName = 'm_oMesh', 
                       CachedProperty = None, 
                       MinVars = 1, 
-                      MaxVars = 255, 
+                      MaxVars = 1, 
                       bWriteable = FALSE, 
                       bModifiesLinkedObject = FALSE, 
                       bAllowAnyType = FALSE

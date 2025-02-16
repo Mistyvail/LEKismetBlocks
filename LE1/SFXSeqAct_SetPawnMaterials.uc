@@ -82,7 +82,7 @@ public function ApplyBasicOverrides(BioPawn InPawn, MaterialInstanceConstant InM
     {
         Morph = BioPawnChallengeScaledType(InPawn.m_oBehavior.m_oActorType).m_oMorphFace;
     }
-    if (Morph == None)
+    if (Morph == None || Morph.m_oMaterialOverrides == None)
     {
         return;
     }

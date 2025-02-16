@@ -1,44 +1,79 @@
-Class SFXSeqAct_SetSMAMaterialParameters extends SequenceAction;
+Class SFXSeqAct_SetActorMaterialParameters extends SequenceAction;
 
-enum GSMAComponent
+enum GActorComponent
 {
-    SMAComponent_Mesh,
-    SMAComponent_Head,
-    SMAComponent_Hair,
+    ActorComponent_Mesh,
+    ActorComponent_Head,
+    ActorComponent_Hair,
+    ActorComponent_Headgear,
 };
 
-var(SFXSeqAct_SetSMAMaterialParameters) GSMAComponent m_eSMAComponent;
-var(SFXSeqAct_SetSMAMaterialParameters) array<VectorParameterValue> VectorParameterValues;
-var(SFXSeqAct_SetSMAMaterialParameters) array<ScalarParameterValue> ScalarParameterValues;
-var(SFXSeqAct_SetSMAMaterialParameters) array<TextureParameterValue> TextureParameterValues;
+var(SFXSeqAct_SetActorMaterialParameters) GActorComponent m_eActorComponent;
+var(SFXSeqAct_SetActorMaterialParameters) array<VectorParameterValue> VectorParameterValues;
+var(SFXSeqAct_SetActorMaterialParameters) array<ScalarParameterValue> ScalarParameterValues;
+var(SFXSeqAct_SetActorMaterialParameters) array<TextureParameterValue> TextureParameterValues;
 
 public function Activated()
 {
     local Object ChkObject;
+    local SFXStuntActor StuntActor;
     local SkeletalMeshActor SMA;
     local SkeletalMeshComponent MeshCmpt;
     local int idx;
     
     foreach Targets(ChkObject, )
     {
+        StuntActor = SFXStuntActor(ChkObject);
+        if (StuntActor != None)
+        {
+            switch (m_eActorComponent)
+            {
+                case GActorComponent.ActorComponent_Mesh:
+                    for (idx = 0; idx < StuntActor.BodyMesh.Materials.Length; idx++)
+                    {
+                        SetMaterialParameters(StuntActor.BodyMesh.Materials[idx]);
+                    }
+                    break;
+                case GActorComponent.ActorComponent_Head:
+                    for (idx = 0; idx < StuntActor.HeadMesh.Materials.Length; idx++)
+                    {
+                        SetMaterialParameters(StuntActor.HeadMesh.Materials[idx]);
+                    }
+                    break;
+                case GActorComponent.ActorComponent_Hair:
+                    for (idx = 0; idx < StuntActor.HairMesh.Materials.Length; idx++)
+                    {
+                        SetMaterialParameters(StuntActor.HairMesh.Materials[idx]);
+                    }
+                    break;
+                case GActorComponent.ActorComponent_Headgear:
+                    for (idx = 0; idx < StuntActor.HeadGearMesh.Materials.Length; idx++)
+                    {
+                        SetMaterialParameters(StuntActor.HeadGearMesh.Materials[idx]);
+                    }
+                    break;
+                default:
+            }
+            continue;
+        }
         SMA = SFXSkeletalMeshActor(ChkObject);
         if (SMA != None)
         {
-            switch (m_eSMAComponent)
+            switch (m_eActorComponent)
             {
-                case GSMAComponent.SMAComponent_Mesh:
+                case GActorComponent.ActorComponent_Mesh:
                     for (idx = 0; idx < SMA.SkeletalMeshComponent.Materials.Length; idx++)
                     {
                         SetMaterialParameters(SMA.SkeletalMeshComponent.Materials[idx]);
                     }
                     break;
-                case GSMAComponent.SMAComponent_Head:
+                case GActorComponent.ActorComponent_Head:
                     for (idx = 0; idx < SFXSkeletalMeshActor(SMA).HeadMesh.Materials.Length; idx++)
                     {
                         SetMaterialParameters(SFXSkeletalMeshActor(SMA).HeadMesh.Materials[idx]);
                     }
                     break;
-                case GSMAComponent.SMAComponent_Hair:
+                case GActorComponent.ActorComponent_Hair:
                     for (idx = 0; idx < SFXSkeletalMeshActor(SMA).HairMesh.Materials.Length; idx++)
                     {
                         SetMaterialParameters(SFXSkeletalMeshActor(SMA).HairMesh.Materials[idx]);
@@ -63,21 +98,21 @@ public function Activated()
             SMA = SFXSkeletalMeshActorMAT(ChkObject);
             if (SMA != None)
             {
-                switch (m_eSMAComponent)
+                switch (m_eActorComponent)
                 {
-                    case GSMAComponent.SMAComponent_Mesh:
+                    case GActorComponent.ActorComponent_Mesh:
                         for (idx = 0; idx < SMA.SkeletalMeshComponent.Materials.Length; idx++)
                         {
                             SetMaterialParameters(SMA.SkeletalMeshComponent.Materials[idx]);
                         }
                         break;
-                    case GSMAComponent.SMAComponent_Head:
+                    case GActorComponent.ActorComponent_Head:
                         for (idx = 0; idx < SFXSkeletalMeshActorMAT(SMA).HeadMesh.Materials.Length; idx++)
                         {
                             SetMaterialParameters(SFXSkeletalMeshActorMAT(SMA).HeadMesh.Materials[idx]);
                         }
                         break;
-                    case GSMAComponent.SMAComponent_Hair:
+                    case GActorComponent.ActorComponent_Hair:
                         for (idx = 0; idx < SFXSkeletalMeshActorMAT(SMA).HairMesh.Materials.Length; idx++)
                         {
                             SetMaterialParameters(SFXSkeletalMeshActorMAT(SMA).HairMesh.Materials[idx]);
@@ -136,7 +171,7 @@ defaultproperties
     bCallHandler = FALSE
     VariableLinks = ({
                       LinkedVariables = (), 
-                      LinkDesc = "MeshActor", 
+                      LinkDesc = "Actor", 
                       ExpectedType = Class'SeqVar_Object', 
                       LinkVar = 'None', 
                       PropertyName = 'Targets', 

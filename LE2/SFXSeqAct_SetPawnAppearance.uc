@@ -240,7 +240,7 @@ public function ApplyOverrides(BioPawn InPawn)
     {
         Morph = BioPawnType(InPawn.ActorType).m_oMorphFace;
     }
-    if (Morph.m_oMaterialOverrides == None)
+    if (Morph == None || Morph.m_oMaterialOverrides == None)
     {
         return;
     }
@@ -272,7 +272,7 @@ defaultproperties
                       PropertyName = 'm_oMesh', 
                       CachedProperty = None, 
                       MinVars = 1, 
-                      MaxVars = 255, 
+                      MaxVars = 1, 
                       bWriteable = FALSE, 
                       bModifiesLinkedObject = FALSE, 
                       bAllowAnyType = FALSE
@@ -285,7 +285,7 @@ defaultproperties
                       PropertyName = 'm_oHairMesh', 
                       CachedProperty = None, 
                       MinVars = 1, 
-                      MaxVars = 255, 
+                      MaxVars = 1, 
                       bWriteable = FALSE, 
                       bModifiesLinkedObject = FALSE, 
                       bAllowAnyType = FALSE
@@ -298,7 +298,7 @@ defaultproperties
                       PropertyName = 'm_oHeadGearMesh', 
                       CachedProperty = None, 
                       MinVars = 1, 
-                      MaxVars = 255, 
+                      MaxVars = 1, 
                       bWriteable = FALSE, 
                       bModifiesLinkedObject = FALSE, 
                       bAllowAnyType = FALSE
@@ -311,7 +311,7 @@ defaultproperties
                       PropertyName = 'm_oVisorMesh', 
                       CachedProperty = None, 
                       MinVars = 1, 
-                      MaxVars = 255, 
+                      MaxVars = 1, 
                       bWriteable = FALSE, 
                       bModifiesLinkedObject = FALSE, 
                       bAllowAnyType = FALSE
@@ -324,7 +324,7 @@ defaultproperties
                       PropertyName = 'm_oFacePlateMesh', 
                       CachedProperty = None, 
                       MinVars = 1, 
-                      MaxVars = 255, 
+                      MaxVars = 1, 
                       bWriteable = FALSE, 
                       bModifiesLinkedObject = FALSE, 
                       bAllowAnyType = FALSE

@@ -82,7 +82,7 @@ public function ApplyBasicOverrides(BioPawn InPawn, MaterialInstanceConstant InM
     {
         Morph = BioPawnType(InPawn.ActorType).m_oMorphFace;
     }
-    if (Morph.m_oMaterialOverrides == None)
+    if (Morph == None || Morph.m_oMaterialOverrides == None)
     {
         return;
     }

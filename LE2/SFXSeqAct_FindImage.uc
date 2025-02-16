@@ -24,7 +24,7 @@ defaultproperties
                       PropertyName = 'ImagePath', 
                       CachedProperty = None, 
                       MinVars = 1, 
-                      MaxVars = 255, 
+                      MaxVars = 1, 
                       bWriteable = FALSE, 
                       bModifiesLinkedObject = FALSE, 
                       bAllowAnyType = FALSE
