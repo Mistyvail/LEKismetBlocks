@@ -128,7 +128,7 @@ defaultproperties
                       PropertyName = 'Targets', 
                       CachedProperty = None, 
                       MinVars = 1, 
-                      MaxVars = 1, 
+                      MaxVars = 255, 
                       bWriteable = FALSE, 
                       bModifiesLinkedObject = FALSE, 
                       bAllowAnyType = FALSE
