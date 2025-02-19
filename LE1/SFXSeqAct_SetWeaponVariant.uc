@@ -7,21 +7,25 @@ var(SFXSeqAct_SetWeaponVariant) int m_nVariation;
 public function Activated()
 {
     local Object ChkObject;
-    local BioPawn Pawn;
     local BioWeaponRanged Weapon;
+    local SkeletalMeshComponent SkelCmpt;
+    local BioAppearanceItemWeapon Appr;
     
     foreach Targets(ChkObject, )
     {
-        Pawn = BioPawn(ChkObject);
-        if (Pawn != None)
+        Weapon = GetWeapon(BioPawn(ChkObject));
+        Appr = FindVariants(m_eWeapon, Weapon);
+        if (Appr == None)
         {
-            Weapon = GetWeapon(Pawn);
-            if (Weapon != None)
-            {
-                ApplyVariation(Weapon, m_nVariation);
-                ApplyOverride(Weapon);
-            }
+            return;
         }
+        SkelCmpt = SkeletalMeshComponent(Weapon.Mesh);
+        if (SkelCmpt == None)
+        {
+            SkelCmpt = SkeletalMeshActor(ChkObject).SkeletalMeshComponent;
+        }
+        ApplyVariation(Appr, SkelCmpt, m_nVariation);
+        ApplyOverride(SkelCmpt);
     }
 }
 public function BioWeaponRanged GetWeapon(BioPawn Pawn)
@@ -31,6 +35,10 @@ public function BioWeaponRanged GetWeapon(BioPawn Pawn)
     local BioWeaponRanged Weapon;
     local int I;
     
+    if (Pawn == None)
+    {
+        return None;
+    }
     Behavior = BioPawnBehavior(Pawn.oBioComponent);
     if (Behavior != None)
     {
@@ -54,60 +62,88 @@ public function BioWeaponRanged GetWeapon(BioPawn Pawn)
     }
     return None;
 }
-public function ApplyVariation(BioWeaponRanged Weapon, int Variation)
+public function BioAppearanceItemWeapon FindVariants(EBioItemWeaponRangedType Type, BioWeaponRanged Weapon)
 {
-    local BioAppearanceItemWeapon Appr;
-    local SkeletalMeshComponent SkelCmpt;
-    local BioAppearanceItemSophisticatedVariant Variant;
-    local int I;
+    local Object Obj;
     
-    Appr = BioAppearanceItemWeapon(Weapon.m_oItem.m_oAppearance);
-    SkelCmpt = SkeletalMeshComponent(Weapon.Mesh);
-    if (Appr != None)
+    Obj = Weapon.m_oItem.m_oAppearance;
+    if (BioAppearanceItemWeapon(Obj) == None)
     {
-        Variant = Appr.m_variants[Variation];
-        SkelCmpt.SetSkeletalMesh(Variant.m_oModelMesh);
+        Obj = FindObject("BIOG_WPN_ALL_MASTER_L.Appearance." $ AppearanceItem(Type), Class'BioAppearanceItemWeapon');
+    }
+    if (BioAppearanceItemWeapon(Obj) == None)
+    {
+        Obj = DynamicLoadObject("BIOG_WPN_ALL_MASTER_L.Appearance." $ AppearanceItem(Type), Class'BioAppearanceItemWeapon');
+    }
+    return BioAppearanceItemWeapon(Obj);
+}
+public function string AppearanceItem(EBioItemWeaponRangedType Type)
+{
+    switch (Type)
+    {
+        case EBioItemWeaponRangedType.ITEM_WEAPON_RANGED_PISTOL:
+            return "Pistol.Default_WPN_PST_Appr";
+            break;
+        case EBioItemWeaponRangedType.ITEM_WEAPON_RANGED_SHOTGUN:
+            return "Shotgun.Default_WPN_BLS_Appr";
+            break;
+        case EBioItemWeaponRangedType.ITEM_WEAPON_RANGED_ASSAULT_RIFLE:
+            return "Assault_Rifle.Default_WPN_ASL_Appr";
+            break;
+        case EBioItemWeaponRangedType.ITEM_WEAPON_RANGED_SNIPER:
+            return "Sniper_Rifle.Default_WPN_SNP_Appr";
+            break;
+        default:
+    }
+    return "";
+}
+public function ApplyVariation(BioAppearanceItemWeapon Appr, SkeletalMeshComponent SkelCmpt, int Variation)
+{
+    if (Appr != None && SkelCmpt != None)
+    {
+        SkelCmpt.SetSkeletalMesh(Appr.GetSkeletalMesh(Variation));
         Appr.ApplyMaterials(Variation, SkelCmpt);
-        SkelCmpt.AnimSets[0] = Variant.m_oWeaponAnimSet;
-        SkelCmpt.SetAnimTreeTemplate(Variant.m_oWeaponAnimTree);
-        SkelCmpt.SetPhysicsAsset(Variant.m_oPhysicsAsset);
+        SkelCmpt.AnimSets[0] = Appr.GetAnimationSet(Variation);
+        SkelCmpt.SetAnimTreeTemplate(Appr.GetAnimationTree(Variation));
+        SkelCmpt.SetPhysicsAsset(Appr.GetPhysicsAsset(Variation));
     }
 }
-public function ApplyOverride(BioWeaponRanged Weapon)
+public function ApplyOverride(SkeletalMeshComponent SkelCmpt)
 {
-    local SkeletalMeshComponent SkelCmpt;
     local MaterialInstanceConstant MIC;
     local int I;
     
-    SkelCmpt = SkeletalMeshComponent(Weapon.Mesh);
-    if (m_Override.m_oModelMesh != None)
+    if (SkelCmpt != None)
     {
-        SkelCmpt.SetSkeletalMesh(m_Override.m_oModelMesh);
-    }
-    if (m_Override.m_aMaterials.Length != 0 || m_Override.m_oModelMesh != None)
-    {
-        for (I = 0; I < SkelCmpt.SkeletalMesh.Materials.Length; ++I)
+        if (m_Override.m_oModelMesh != None)
         {
-            MIC = new (Self) Class'MaterialInstanceConstant';
-            MIC.SetParent(SkelCmpt.SkeletalMesh.Materials[I]);
-            if (m_Override.m_aMaterials[I] != None)
-            {
-                MIC.SetParent(m_Override.m_aMaterials[I]);
-            }
-            SkelCmpt.SetMaterial(I, MIC);
+            SkelCmpt.SetSkeletalMesh(m_Override.m_oModelMesh);
         }
-    }
-    if (m_Override.m_oWeaponAnimSet != None)
-    {
-        SkelCmpt.AnimSets[0] = m_Override.m_oWeaponAnimSet;
-    }
-    if (m_Override.m_oWeaponAnimTree != None)
-    {
-        SkelCmpt.SetAnimTreeTemplate(m_Override.m_oWeaponAnimTree);
-    }
-    if (m_Override.m_oPhysicsAsset != None)
-    {
-        SkelCmpt.SetPhysicsAsset(m_Override.m_oPhysicsAsset);
+        if (m_Override.m_aMaterials.Length != 0 || m_Override.m_oModelMesh != None)
+        {
+            for (I = 0; I < SkelCmpt.SkeletalMesh.Materials.Length; ++I)
+            {
+                MIC = new (Self) Class'MaterialInstanceConstant';
+                MIC.SetParent(SkelCmpt.SkeletalMesh.Materials[I]);
+                if (m_Override.m_aMaterials[I] != None)
+                {
+                    MIC.SetParent(m_Override.m_aMaterials[I]);
+                }
+                SkelCmpt.SetMaterial(I, MIC);
+            }
+        }
+        if (m_Override.m_oWeaponAnimSet != None)
+        {
+            SkelCmpt.AnimSets[0] = m_Override.m_oWeaponAnimSet;
+        }
+        if (m_Override.m_oWeaponAnimTree != None)
+        {
+            SkelCmpt.SetAnimTreeTemplate(m_Override.m_oWeaponAnimTree);
+        }
+        if (m_Override.m_oPhysicsAsset != None)
+        {
+            SkelCmpt.SetPhysicsAsset(m_Override.m_oPhysicsAsset);
+        }
     }
 }
 
@@ -117,7 +153,7 @@ defaultproperties
     bCallHandler = FALSE
     VariableLinks = ({
                       LinkedVariables = (), 
-                      LinkDesc = "Pawn", 
+                      LinkDesc = "Target", 
                       ExpectedType = Class'SeqVar_Object', 
                       LinkVar = 'None', 
                       PropertyName = 'Targets', 

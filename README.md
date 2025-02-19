@@ -45,7 +45,7 @@ This needs to be repeated every new Legendary Explorer session.
     - *m_nManufacturer* and *m_nLevel* sets weapon stats and level.
 	    - Valid Manufacturer IDs are found in the *StatsClassBindings* array in the *BioWeaponRanged* Class.
 - **SFXSeqAct_SetWeaponVariant**
-    - Changes the appearance of a Pawns weapon.
+    - Changes the appearance of a Pawns or SkeletalMeshActor weapon.
 	- Variants are the meshes and materials that weapons have for different manufacturers.
 	    - They can be found at `BIOC_Materials.BIOG_WPN_ALL_MASTER_L.Appearance` in the weapon types *m_variants* array.
 	- *m_eWeapon* is 0-3 (Pistol, Shotgun, Assault Rifle, Sniper Rifle)
