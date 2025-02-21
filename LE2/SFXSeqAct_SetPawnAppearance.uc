@@ -37,7 +37,7 @@ var(SFXSeqAct_SetPawnAppearance) bool m_bHideHeadgear;
 var(SFXSeqAct_SetPawnAppearance) bool m_bHideVisor;
 var(SFXSeqAct_SetPawnAppearance) bool m_bHideFacePlate;
 var(SFXSeqAct_SetPawnAppearance) bool m_bHideAccessories;
-var(SFXSeqAct_SetPawnAppearance) bool bPreserveAnimation;
+var(SFXSeqAct_SetPawnAppearance) bool m_bPreserveAnimation;
 
 public function Activated()
 {
@@ -56,7 +56,7 @@ public function Activated()
                 ResetSkeletalComponent(Pawn, Pawn.Mesh, m_oMesh, m_aoMeshMaterials, 0);
                 UpdateBoneMap(Pawn);
             }
-             if (m_Head.Mesh != None)
+            if (m_Head.Mesh != None)
             {
                 ResetSkeletalComponent(Pawn, Pawn.HeadMesh, m_Head.Mesh, m_Head.Materials, 1);
                 Pawn.MorphHead = m_Head.MorphHead;
@@ -118,7 +118,7 @@ public function ResetSkeletalComponent(BioPawn InPawn, SkeletalMeshComponent InC
     {
         InComponent.SetMaterial(idx, None);
     }
-    InComponent.SetSkeletalMesh(InMesh, bPreserveAnimation);
+    InComponent.SetSkeletalMesh(InMesh, m_bPreserveAnimation);
     for (idx = 0; idx < InComponent.SkeletalMesh.Materials.Length; ++idx)
     {
         MIC = new (InComponent) Class'MaterialInstanceConstant';

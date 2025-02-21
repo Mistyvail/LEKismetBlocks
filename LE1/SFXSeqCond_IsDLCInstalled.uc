@@ -1,12 +1,12 @@
 Class SFXSeqCond_IsDLCInstalled extends SequenceCondition;
 
-var(SFXSeqCond_IsDLCInstalled) string DLCFolderName;
+var(SFXSeqCond_IsDLCInstalled) string m_sDLCFolderName;
 
 public function Activated()
 {
     local string Tlk;
     
-    Tlk = DLCFolderName $ "_GlobalTlk.GlobalTlk_tlk";
+    Tlk = m_sDLCFolderName $ "_GlobalTlk.GlobalTlk_tlk";
     if (FindTLK(Tlk) || FindTLK("DLC_MOD_" $ Tlk))
     {
         OutputLinks[0].bHasImpulse = TRUE;

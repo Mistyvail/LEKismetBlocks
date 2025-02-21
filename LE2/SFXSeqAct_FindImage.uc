@@ -1,15 +1,11 @@
 Class SFXSeqAct_FindImage extends SequenceAction;
 
-var(SFXSeqAct_FindImage) string ImagePath;
-var(SFXSeqAct_FindImage) Texture2D Image;
+var(SFXSeqAct_FindImage) string m_sImagePath;
+var(SFXSeqAct_FindImage) Texture2D m_oImage;
 
-public static event function int GetObjClassVersion()
-{
-    return Super(SequenceObject).GetObjClassVersion() + 2;
-}
 public function Activated()
 {
-    Image = Class'SFXPlotTreasure'.static.FindImage(ImagePath);
+    m_oImage = Class'SFXPlotTreasure'.static.FindImage(m_sImagePath);
 }
 
 //class default properties can be edited in the Properties tab for the class's Default__ object.
@@ -21,7 +17,7 @@ defaultproperties
                       LinkDesc = "Path", 
                       ExpectedType = Class'SeqVar_String', 
                       LinkVar = 'None', 
-                      PropertyName = 'ImagePath', 
+                      PropertyName = 'm_sImagePath', 
                       CachedProperty = None, 
                       MinVars = 1, 
                       MaxVars = 1, 
@@ -34,7 +30,7 @@ defaultproperties
                       LinkDesc = "Image", 
                       ExpectedType = Class'SeqVar_Object', 
                       LinkVar = 'None', 
-                      PropertyName = 'Image', 
+                      PropertyName = 'm_oImage', 
                       CachedProperty = None, 
                       MinVars = 1, 
                       MaxVars = 255, 

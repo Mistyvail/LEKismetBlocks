@@ -1,4 +1,4 @@
-Class SFXSeqAct_SetPawnMaterialParameters extends SequenceAction;
+Class SFXSeqAct_SetPawnMaterialParams extends SequenceAction;
 
 enum GBioPawnComponent
 {
@@ -11,11 +11,11 @@ enum GBioPawnComponent
     BioPawnComponent_Accessory,
 };
 
-var(SFXSeqAct_SetPawnMaterialParameters) array<VectorParameterValue> VectorParameterValues;
-var(SFXSeqAct_SetPawnMaterialParameters) array<ScalarParameterValue> ScalarParameterValues;
-var(SFXSeqAct_SetPawnMaterialParameters) array<TextureParameterValue> TextureParameterValues;
-var(SFXSeqAct_SetPawnMaterialParameters) GBioPawnComponent m_eBioPawnComponent;
-var(SFXSeqAct_SetPawnMaterialParameters) int m_nAccessory;
+var(SFXSeqAct_SetPawnMaterialParams) array<VectorParameterValue> m_aVectorParameterValues;
+var(SFXSeqAct_SetPawnMaterialParams) array<ScalarParameterValue> m_aScalarParameterValues;
+var(SFXSeqAct_SetPawnMaterialParams) array<TextureParameterValue> m_aTextureParameterValues;
+var(SFXSeqAct_SetPawnMaterialParams) GBioPawnComponent m_eBioPawnComponent;
+var(SFXSeqAct_SetPawnMaterialParams) int m_nAccessory;
 
 public function Activated()
 {
@@ -97,17 +97,17 @@ public function SetMaterialParameters(MaterialInterface InMaterial)
     MIC = MaterialInstanceConstant(InMaterial);
     if (MIC != None)
     {
-        for (idx = 0; idx < VectorParameterValues.Length; ++idx)
+        for (idx = 0; idx < m_aVectorParameterValues.Length; ++idx)
         {
-            MIC.SetVectorParameterValue(VectorParameterValues[idx].ParameterName, VectorParameterValues[idx].ParameterValue);
+            MIC.SetVectorParameterValue(m_aVectorParameterValues[idx].ParameterName, m_aVectorParameterValues[idx].ParameterValue);
         }
-        for (idx = 0; idx < ScalarParameterValues.Length; ++idx)
+        for (idx = 0; idx < m_aScalarParameterValues.Length; ++idx)
         {
-            MIC.SetScalarParameterValue(ScalarParameterValues[idx].ParameterName, ScalarParameterValues[idx].ParameterValue);
+            MIC.SetScalarParameterValue(m_aScalarParameterValues[idx].ParameterName, m_aScalarParameterValues[idx].ParameterValue);
         }
-        for (idx = 0; idx < TextureParameterValues.Length; ++idx)
+        for (idx = 0; idx < m_aTextureParameterValues.Length; ++idx)
         {
-            MIC.SetTextureParameterValue(TextureParameterValues[idx].ParameterName, TextureParameterValues[idx].ParameterValue);
+            MIC.SetTextureParameterValue(m_aTextureParameterValues[idx].ParameterName, m_aTextureParameterValues[idx].ParameterValue);
         }
     }
 }

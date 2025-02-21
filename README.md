@@ -19,7 +19,7 @@ This needs to be repeated every new Legendary Explorer session.
 - **SFXSeqAct_SetPawnMaterials**
     - Targets a BioPawns Component and changes its Materials.
 	- The *m_eBioPawnComponent* variable determines which component.
-- **SFXSeqAct_SetPawnMaterialParameters**
+- **SFXSeqAct_SetPawnMaterialParams**
     - Targets a BioPawns Component and changes its Vector, Scalar, and Texture Parameters.
 	- The *m_eBioPawnComponent* variable determines which component; if None, applies to all.
 - **SFXSeqAct_UpdateActorAppr**
@@ -64,7 +64,7 @@ This needs to be repeated every new Legendary Explorer session.
 - **SFXSeqAct_SetPawnMaterials**
     - Targets a BioPawns Component and changes its Materials.
     - The *m_eBioPawnComponent* variable determines which component.
-- **SFXSeqAct_SetPawnMaterialParameters**
+- **SFXSeqAct_SetPawnMaterialParams**
     - Changes a BioPawns Vector, Scalar, and Texture Parameters.
     - The *m_eBioPawnComponent* variable determines which component; if None, applies to all.
 - **SFXSeqAct_SetActorAppearance**
@@ -79,7 +79,7 @@ This needs to be repeated every new Legendary Explorer session.
     - Targets a SkeletalMeshActors Component and changes its Materials.
     - The *m_eBioPawnComponent* variable determines which component.
 	- Works on SFXSkeletalMeshActors, SFXSkeletalMeshActorMATs, and SkeletalMeshActors.
-- **SFXSeqAct_SetActorMaterialParameters**
+- **SFXSeqAct_SetActorMaterialParams**
     - Changes a SkeletalMeshActors Vector, Scalar, and Texture Parameters.
     - Can either target a SkeletalMeshActors Component or if the enum is "None", applies to all.
 	- Works on SFXSkeletalMeshActors, SFXSkeletalMeshActorMATs, and SkeletalMeshActors.
@@ -104,7 +104,7 @@ This needs to be repeated every new Legendary Explorer session.
     - Targets a SkeletalMeshActors Component and changes its Materials.
     - The *m_eBioPawnComponent* variable determines which component.
 	- Works on SFXStuntActors, SFXSkeletalMeshActors, SFXSkeletalMeshActorMATs, SkeletalMeshActors, and SkeletalMeshActorMATs.
-- **SFXSeqAct_SetActorMaterialParameters**
+- **SFXSeqAct_SetActorMaterialParams**
     - Changes a SkeletalMeshActors Vector, Scalar, and Texture Parameters.
     - The *m_eBioPawnComponent* variable determines which component; if None, applies to all.
 	- Works on SFXStuntActors, SFXSkeletalMeshActors, SFXSkeletalMeshActorMATs, SkeletalMeshActors, and SkeletalMeshActorMATs.

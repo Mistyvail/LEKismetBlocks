@@ -11,7 +11,7 @@ enum EActorComponent
 var(SFXSeqAct_SetActorMesh) EActorComponent m_eActorComponent;
 var(SFXSeqAct_SetActorMesh) SkeletalMesh m_oMesh;
 var(SFXSeqAct_SetActorMesh) array<MaterialInterface> m_aoMaterials;
-var(SFXSeqAct_SetActorMesh) bool bPreserveAnimation;
+var(SFXSeqAct_SetActorMesh) bool m_bPreserveAnimation;
 
 public function Activated()
 {
@@ -107,7 +107,7 @@ public function SetComponentMesh(Actor InActor, SkeletalMeshComponent InComponen
     {
         InComponent.SetMaterial(idx, None);
     }
-    InComponent.SetSkeletalMesh(InMesh, bPreserveAnimation);
+    InComponent.SetSkeletalMesh(InMesh, m_bPreserveAnimation);
     if (InComponent.SkeletalMesh != None)
     {
         for (idx = 0; idx < InComponent.SkeletalMesh.Materials.Length; ++idx)

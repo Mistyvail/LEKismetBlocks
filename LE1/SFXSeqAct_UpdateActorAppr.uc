@@ -2,14 +2,14 @@ Class SFXSeqAct_UpdateActorAppr extends SequenceAction;
 
 struct VisorAppr 
 {
-    var SkeletalMesh m_oMesh;
-    var array<MaterialInterface> m_aoMaterial;
+    var SkeletalMesh Mesh;
+    var array<MaterialInterface> Materials;
 };
 struct FacePlateAppr 
 {
-    var SkeletalMesh m_oMesh;
-    var array<MaterialInterface> m_aoMaterial;
-    var bool m_bHideVisor;
+    var SkeletalMesh Mesh;
+    var array<MaterialInterface> Materials;
+    var bool HideVisor;
 };
 enum EActorTypeAppearance
 {
@@ -101,24 +101,24 @@ public function UpdateAppr(Bio_Appr_Character Target)
         case EActorTypeAppearance.Appearance_Visor:
             if (Headgear != None)
             {
-                Headgear.m_apVisorMesh[0] = m_visor.m_oMesh;
-                if (m_visor.m_oMesh != None && m_visor.m_aoMaterial.Length == 0)
+                Headgear.m_apVisorMesh[0] = m_visor.Mesh;
+                if (m_visor.Mesh != None && m_visor.Materials.Length == 0)
                 {
-                    m_visor.m_aoMaterial = m_visor.m_oMesh.Materials;
+                    m_visor.Materials = m_visor.Mesh.Materials;
                 }
-                Headgear.m_apVisorMaterial = m_visor.m_aoMaterial;
+                Headgear.m_apVisorMaterial = m_visor.Materials;
             }
             break;
         case EActorTypeAppearance.Appearance_FacePlate:
             if (Headgear != None)
             {
-                Headgear.m_aFacePlateMeshSpec[0].m_pMesh = m_facePlate.m_oMesh;
-                Headgear.m_aFacePlateMeshSpec[0].m_bHidesVisor = m_facePlate.m_bHideVisor;
-                if (m_facePlate.m_oMesh != None && m_facePlate.m_aoMaterial.Length == 0)
+                Headgear.m_aFacePlateMeshSpec[0].m_pMesh = m_facePlate.Mesh;
+                Headgear.m_aFacePlateMeshSpec[0].m_bHidesVisor = m_facePlate.HideVisor;
+                if (m_facePlate.Mesh != None && m_facePlate.Materials.Length == 0)
                 {
-                    m_facePlate.m_aoMaterial = m_facePlate.m_oMesh.Materials;
+                    m_facePlate.Materials = m_facePlate.Mesh.Materials;
                 }
-                Headgear.m_apFacePlateMaterial = m_facePlate.m_aoMaterial;
+                Headgear.m_apFacePlateMaterial = m_facePlate.Materials;
             }
             break;
         default:

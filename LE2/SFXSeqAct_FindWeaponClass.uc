@@ -1,15 +1,11 @@
 Class SFXSeqAct_FindWeaponClass extends SequenceAction;
 
-var(SFXSeqAct_FindWeaponClass) string WeaponPath;
-var(SFXSeqAct_FindWeaponClass) Class<SFXWeapon> WeaponClass;
+var(SFXSeqAct_FindWeaponClass) string m_sWeaponPath;
+var(SFXSeqAct_FindWeaponClass) Class<SFXWeapon> m_oWeaponClass;
 
-public static event function int GetObjClassVersion()
-{
-    return Super(SequenceObject).GetObjClassVersion() + 2;
-}
 public function Activated()
 {
-    WeaponClass = FindWeapon(WeaponPath);
+    m_oWeaponClass = FindWeapon(m_sWeaponPath);
 }
 public function Class<SFXWeapon> FindWeapon(string Path)
 {
@@ -42,7 +38,7 @@ defaultproperties
                       LinkDesc = "Path", 
                       ExpectedType = Class'SeqVar_String', 
                       LinkVar = 'None', 
-                      PropertyName = 'WeaponPath', 
+                      PropertyName = 'm_sWeaponPath', 
                       CachedProperty = None, 
                       MinVars = 1, 
                       MaxVars = 1, 
@@ -55,7 +51,7 @@ defaultproperties
                       LinkDesc = "Weapon", 
                       ExpectedType = Class'SeqVar_Object', 
                       LinkVar = 'None', 
-                      PropertyName = 'WeaponClass', 
+                      PropertyName = 'm_oWeaponClass', 
                       CachedProperty = None, 
                       MinVars = 1, 
                       MaxVars = 255, 
